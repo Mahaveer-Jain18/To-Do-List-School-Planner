@@ -6,6 +6,9 @@ A comprehensive task management and school planner application designed to help 
 
 **Hosted on Vercel:** [https://to-do-list-school-planner.vercel.app/](https://to-do-list-school-planner.vercel.app/)
 
+> ⚠️ Note: This README describes the Python CLI version.
+> The mention of "Vercel" refers to future web-based plans.
+
 ## 📋 Table of Contents
 
 - [Features](#features)
@@ -36,16 +39,18 @@ A comprehensive task management and school planner application designed to help 
 ### Setup Instructions
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/Mahaveer-Jain18/To-Do-List-School-Planner.git
    cd To-Do-List-School-Planner
    ```
 
 2. **Install required dependencies**
+
    ```bash
    pip install -r requirements.txt
    ```
-   
+
    Note: This project uses Python standard library modules, so no external dependencies are required.
 
 3. **Run the application**
@@ -76,6 +81,7 @@ When you run the application, you'll see a menu with the following options:
 ### Usage Examples
 
 #### Adding a Task
+
 ```
 Select option: 1
 Enter task title: Complete Math Assignment
@@ -86,6 +92,7 @@ Select priority (1: LOW, 2: MEDIUM, 3: HIGH): 3
 ```
 
 #### Viewing Tasks
+
 ```
 Select option: 2
 
@@ -101,6 +108,7 @@ Due Date: 2025-10-30
 ```
 
 #### Updating Task Status
+
 ```
 Select option: 5
 Enter task ID: 1
@@ -109,6 +117,7 @@ Select new status (1: TODO, 2: IN_PROGRESS, 3: COMPLETED): 2
 ```
 
 #### Searching Tasks
+
 ```
 Select option: 8
 Enter search term: Math
@@ -135,19 +144,25 @@ To-Do-List-School-Planner/
 ### Core Components
 
 #### 1. Priority (Enum)
+
 Defines task priority levels:
+
 - `LOW`: For non-urgent tasks
 - `MEDIUM`: For moderately important tasks
 - `HIGH`: For urgent and important tasks
 
 #### 2. TaskStatus (Enum)
+
 Defines task completion states:
+
 - `TODO`: Task not yet started
 - `IN_PROGRESS`: Task is being worked on
 - `COMPLETED`: Task is finished
 
 #### 3. Task (Class)
+
 Represents an individual task with the following attributes:
+
 - `task_id`: Unique identifier
 - `title`: Task name
 - `description`: Detailed task information
@@ -157,7 +172,9 @@ Represents an individual task with the following attributes:
 - `created_at`: Task creation timestamp
 
 #### 4. TodoList (Class)
+
 Manages the collection of tasks and provides methods for:
+
 - Adding new tasks
 - Viewing tasks (all, by status, by priority)
 - Updating task properties
@@ -178,12 +195,14 @@ Manages the collection of tasks and provides methods for:
 ### Task Class
 
 #### Constructor
+
 ```python
-Task(task_id: int, title: str, description: str, 
+Task(task_id: int, title: str, description: str,
      status: TaskStatus, priority: Priority, due_date: datetime)
 ```
 
 #### Methods
+
 - `__str__()`: Returns string representation of the task
 
 ### TodoList Class
@@ -191,9 +210,11 @@ Task(task_id: int, title: str, description: str,
 #### Methods
 
 ##### `add_task(title: str, description: str, priority: Priority, due_date: datetime) -> None`
+
 Adds a new task to the list.
 
 **Parameters:**
+
 - `title`: Task title (string)
 - `description`: Task description (string)
 - `priority`: Task priority (Priority enum)
@@ -202,64 +223,79 @@ Adds a new task to the list.
 **Returns:** None
 
 ##### `view_all_tasks() -> None`
+
 Displays all tasks in the list.
 
 **Returns:** None
 
 ##### `view_tasks_by_status(status: TaskStatus) -> None`
+
 Displays tasks filtered by status.
 
 **Parameters:**
+
 - `status`: Filter by task status (TaskStatus enum)
 
 **Returns:** None
 
 ##### `view_tasks_by_priority(priority: Priority) -> None`
+
 Displays tasks filtered by priority.
 
 **Parameters:**
+
 - `priority`: Filter by task priority (Priority enum)
 
 **Returns:** None
 
 ##### `update_task_status(task_id: int, new_status: TaskStatus) -> bool`
+
 Updates the status of a specific task.
 
 **Parameters:**
+
 - `task_id`: ID of the task to update (int)
 - `new_status`: New status value (TaskStatus enum)
 
 **Returns:** True if successful, False otherwise
 
 ##### `update_task_priority(task_id: int, new_priority: Priority) -> bool`
+
 Updates the priority of a specific task.
 
 **Parameters:**
+
 - `task_id`: ID of the task to update (int)
 - `new_priority`: New priority value (Priority enum)
 
 **Returns:** True if successful, False otherwise
 
 ##### `delete_task(task_id: int) -> bool`
+
 Deletes a task from the list.
 
 **Parameters:**
+
 - `task_id`: ID of the task to delete (int)
 
 **Returns:** True if successful, False otherwise
 
 ##### `search_tasks(query: str) -> List[Task]`
+
 Searches for tasks by title or description.
 
 **Parameters:**
+
 - `query`: Search term (string)
 
 **Returns:** List of matching tasks
 
 ##### `mark_task_complete(task_id: int) -> bool`
+
 Marks a task as completed.
 
 **Parameters:**
+
 - `task_id`: ID of the task to mark complete (int)
 
 **Returns:** True if successful, False otherwise
@@ -271,31 +307,37 @@ Contributions are welcome! Here's how you can help:
 ### How to Contribute
 
 1. **Fork the repository**
+
    - Click the "Fork" button at the top right of this page
 
 2. **Clone your fork**
+
    ```bash
    git clone https://github.com/YOUR-USERNAME/To-Do-List-School-Planner.git
    cd To-Do-List-School-Planner
    ```
 
 3. **Create a new branch**
+
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
 4. **Make your changes**
+
    - Write clear, commented code
    - Follow existing code style
    - Add tests if applicable
 
 5. **Commit your changes**
+
    ```bash
    git add .
    git commit -m "Add: Brief description of your changes"
    ```
 
 6. **Push to your fork**
+
    ```bash
    git push origin feature/your-feature-name
    ```
@@ -328,6 +370,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 👨‍💻 Author
 
 **Mahaveer Jain**
+
 - GitHub: [@Mahaveer-Jain18](https://github.com/Mahaveer-Jain18)
 
 ## 🙏 Acknowledgments
@@ -339,6 +382,7 @@ This project is open source and available under the [MIT License](LICENSE).
 ## 📞 Support
 
 If you encounter any issues or have questions:
+
 1. Check existing [Issues](https://github.com/Mahaveer-Jain18/To-Do-List-School-Planner/issues)
 2. Create a new issue if your problem isn't already listed
 3. Provide detailed information about your problem
