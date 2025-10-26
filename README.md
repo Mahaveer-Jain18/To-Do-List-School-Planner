@@ -5,6 +5,8 @@ A comprehensive task management and school planner application designed to help 
 ## 🚀 Live Demo
 
 **Hosted on Vercel:** [https://to-do-list-school-planner.vercel.app/](https://to-do-list-school-planner.vercel.app/)
+> ⚠️ Note: This README describes the Python CLI version.
+> The mention of "Vercel" refers to future web-based plans.
 
 ## 📋 Table of Contents
 
