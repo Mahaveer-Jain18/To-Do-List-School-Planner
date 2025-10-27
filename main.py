@@ -5,7 +5,7 @@ To-Do List School Planner
 A comprehensive task management system designed for students to organize
 school assignments, projects, and daily tasks efficiently.
 
-Author: Mahaveer Jain
+Author: Mahaveer Jain, chromylcl(Contributor)
 Created: October 2024
 """
 
@@ -90,7 +90,9 @@ class TodoList:
         """Initialize an empty to-do list."""
         self.tasks: List[Task] = []
         self.next_id = 1
-    
+    def search_tasks(self,keyword: str) -> List["Task"]:
+        keyword = keyword.lower()
+        return [task for task in self.tasks if keyword in task.title.lower() or keyword in task.notes.lower()]
     def add_task(self, title: str, subject: str = "General", 
                  priority: Priority = Priority.MEDIUM, 
                  due_date: Optional[date] = None, 
@@ -261,58 +263,113 @@ class TodoList:
 
 
 def main():
-    """Main function demonstrating basic usage of the TodoList system."""
     print("Welcome to To-Do List School Planner!")
     print("=====================================\n")
-    
-    # Initialize the to-do list
+
     todo_list = TodoList()
-    
-    # Add some sample tasks
-    print("Adding sample tasks...")
-    todo_list.add_task(
-        title="Complete Math Assignment Chapter 5",
-        subject="Mathematics",
-        priority=Priority.HIGH,
-        due_date=date(2024, 11, 1),
-        notes="Focus on quadratic equations and graphing"
-    )
-    
-    todo_list.add_task(
-        title="Prepare Science Project Presentation",
-        subject="Science",
-        priority=Priority.URGENT,
-        due_date=date(2024, 10, 30),
-        notes="Include diagrams and experimental results"
-    )
-    
-    todo_list.add_task(
-        title="Read English Literature - Chapter 3",
-        subject="English",
-        priority=Priority.MEDIUM,
-        notes="Take notes on character development"
-    )
-    
-    # Display task counts
-    print("\nTask Summary:")
-    counts = todo_list.get_task_count()
-    for status, count in counts.items():
-        print(f"  {status.title()}: {count}")
-    
-    # Display all tasks
-    print("\nAll Tasks:")
-    print("-" * 50)
-    tasks = todo_list.get_all_tasks()
-    for i, task in enumerate(tasks, 1):
-        due_str = f"Due: {task.due_date}" if task.due_date else "No due date"
-        print(f"{i}. {task.title}")
-        print(f"   Subject: {task.subject} | Priority: {task.priority.name} | {due_str}")
-        if task.notes:
-            print(f"   Notes: {task.notes}")
-        print()
-    
-    print("To-Do List School Planner initialized successfully!")
-    print("You can now extend this system with a CLI or GUI interface.")
+
+    while True:
+        print("\nChoose an option:")
+        print("1. Add a new task")
+        print("2. View all tasks")
+        print("3. Search tasks")
+        print("4. Update task status")
+        print("5. Remove a task")
+        print("6. View summary")
+        print("7. Exit")
+
+        choice = input("\nEnter your choice (1-7): ").strip()
+
+        if choice == "1":
+            # Add new task
+            title = input("Enter task title: ")
+            subject = input("Enter subject: ")
+            priority_input = input("Enter priority (low, medium, high, urgent): ").lower()
+            priority_map = {
+                "low": Priority.LOW,
+                "medium": Priority.MEDIUM,
+                "high": Priority.HIGH,
+                "urgent": Priority.URGENT
+            }
+            priority = priority_map.get(priority_input, Priority.MEDIUM)
+            due_input = input("Enter due date (YYYY-MM-DD) or leave blank: ")
+            due_date = date.fromisoformat(due_input) if due_input else None
+            notes = input("Any notes? ")
+
+            todo_list.add_task(title, subject, priority, due_date, notes)
+            print("✅ Task added successfully!")
+
+        elif choice == "2":
+            # View all tasks
+            print("\n--- All Tasks ---")
+            tasks = todo_list.get_all_tasks()
+            if not tasks:
+                print("No tasks found.")
+            else:
+                for i, task in enumerate(tasks, 1):
+                    due = f"Due: {task.due_date}" if task.due_date else "No due date"
+                    print(f"{i}. {task.title} | {task.subject} | {task.priority.name} | {task.status.name} | {due}")
+
+        elif choice == "3":
+            # Search tasks
+            keyword = input("Enter keyword to search: ")
+            results = todo_list.search_tasks(keyword)
+            if results:
+                print(f"\nFound {len(results)} matching task(s):")
+                for task in results:
+                    print(f"- {task.title} ({task.subject}) | Priority: {task.priority.name}")
+            else:
+                print("No matching tasks found.")
+
+        elif choice == "4":
+            # Update task status
+            tasks = todo_list.get_all_tasks()
+            for i, task in enumerate(tasks, 1):
+                print(f"{i}. {task.title} ({task.status.name})")
+            try:
+                index = int(input("Enter task number to update: ")) - 1
+                new_status = input("Enter new status (pending, in_progress, completed): ").lower()
+                status_map = {
+                    "pending": TaskStatus.PENDING,
+                    "in_progress": TaskStatus.IN_PROGRESS,
+                    "completed": TaskStatus.COMPLETED
+                }
+                if todo_list.update_task_status(index, status_map.get(new_status, TaskStatus.PENDING)):
+                    print("✅ Task status updated successfully!")
+                else:
+                    print("❌ Invalid task number.")
+            except ValueError:
+                print("Invalid input.")
+
+        elif choice == "5":
+            # Remove a task
+            tasks = todo_list.get_all_tasks()
+            for i, task in enumerate(tasks, 1):
+                print(f"{i}. {task.title}")
+            try:
+                index = int(input("Enter task number to remove: ")) - 1
+                if todo_list.remove_task(index):
+                    print("✅ Task removed successfully!")
+                else:
+                    print("❌ Invalid task number.")
+            except ValueError:
+                print("Invalid input.")
+
+        elif choice == "6":
+            # Summary
+            summary = todo_list.get_task_count()
+            print("\n--- Task Summary ---")
+            for key, value in summary.items():
+                print(f"{key.title()}: {value}")
+
+        elif choice == "7":
+            print("👋 Exiting To-Do List Planner. Goodbye!")
+            break
+
+        else:
+            print("❌ Invalid choice. Try again.")
+
+
 
 
 if __name__ == "__main__":
