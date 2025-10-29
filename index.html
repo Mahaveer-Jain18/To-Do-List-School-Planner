@@ -6,10 +6,12 @@
     <meta name="description" content="A responsive to-do list and school planner with daily, weekly, and monthly views">
     <title>To-Do List School Planner</title>
     <link rel="stylesheet" href="styles.css">
+    
+      
 </head>
 <body>
     <!-- Main Header -->
-    <header role="banner" class="header">
+     <header role="banner" class="header">
         <div class="container">
             <h1 class="header__title">School Planner</h1>
             <nav role="navigation" aria-label="Main navigation" class="header__nav">
@@ -20,7 +22,7 @@
                 </ul>
             </nav>
         </div>
-    </header>
+    </header> 
 
     <!-- Main Content Area -->
     <main role="main" class="main-content">
@@ -229,7 +231,7 @@
     </main>
 
     <!-- Footer -->
-    <footer role="contentinfo" class="footer">
+   <footer role="contentinfo" class="footer">
         <div class="container">
             <p class="footer__text">&copy; 2025 School Planner. All rights reserved.</p>
             <nav aria-label="Footer navigation" class="footer__nav">
@@ -240,7 +242,82 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
-    <script src="app.js"></script>
+  
+    
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const htmlElement = document.documentElement;
+        // Check if the light theme is currently active, considering both the data-theme attribute and the system preference.
+        const systemPrefersLight = window.matchMedia('(prefers-color-scheme: light)').matches;
+        
+        // Determine the initial state: isLight is true if 'data-theme' is 'light' OR if no 'data-theme' is set AND the system prefers light.
+        const isLight = htmlElement.getAttribute('data-theme') === 'light' || (!htmlElement.getAttribute('data-theme') && systemPrefersLight);
+        
+        // Ensure the data-theme attribute reflects the initial state if set by system preference but not explicitly by the user.
+        // If the system is light and there is no explicit theme set, the attribute should be removed, which is the default.
+        if (systemPrefersLight && !htmlElement.getAttribute('data-theme')) {
+            // Do nothing, let the media query handle it (default dark rule is overridden by media query)
+            // The button text will be set to '🌙 Dark Mode' below, prompting the user to switch to dark.
+        } else if (!isLight) {
+            // If we're in the default Dark mode (or manually set to dark)
+            htmlElement.removeAttribute('data-theme');
+        } else {
+             // If we're in the Light mode (manually set or system preferred)
+             htmlElement.setAttribute('data-theme', 'light');
+        }
+
+
+        // 2. Create the dark mode toggle button
+        const toggleButton = document.createElement('button');
+        toggleButton.id = 'darkModeToggle';
+        
+        // 🚀 THE FIX: If the current theme is LIGHT, the button text should offer to switch to DARK, and vice versa.
+        toggleButton.textContent = isLight ? '🌙 Dark Mode' : '☀️ Light Mode'; 
+        
+        // Apply button styles including new padding/margin
+        Object.assign(toggleButton.style, {
+            position: 'fixed',
+            top: 'var(--space-4)', // Added margin/padding
+            right: 'var(--space-1)', // Added margin/padding
+            padding: 'var(--space-3) var(--space-4)', // Increased padding
+            borderRadius: '20px',
+            border: 'none',
+            // Use CSS variables for colors (requires direct read of computed style for dynamic updates, but we'll use base colors for simplicity here)
+            backgroundColor: isLight ? '#2563eb' : '#3b82f6', 
+            color: 'white',
+            cursor: 'pointer',
+            zIndex: '1000',
+            boxShadow: 'var(--elev-1)',
+            transition: 'background-color 0.3s, transform 0.1s'
+        });
+
+        document.body.appendChild(toggleButton);
+
+        // 3. Toggle logic
+        toggleButton.addEventListener('click', () => {
+            const isCurrentlyLight = htmlElement.hasAttribute('data-theme');
+
+            if (isCurrentlyLight) {
+                // Switch to Dark Mode
+                htmlElement.removeAttribute('data-theme');
+                toggleButton.textContent = '☀️ Light Mode'; // Offer to switch back to Light
+                
+                // Update button color using CSS variables
+                const darkAccent = getComputedStyle(htmlElement).getPropertyValue('--accent').trim();
+                toggleButton.style.backgroundColor = darkAccent;
+
+            } else {
+                // Switch to Light Mode
+                htmlElement.setAttribute('data-theme', 'light');
+                toggleButton.textContent = '🌙 Dark Mode'; // Offer to switch back to Dark
+
+                // Update button color using CSS variables
+                const lightAccent = getComputedStyle(htmlElement).getPropertyValue('--accent').trim();
+                toggleButton.style.backgroundColor = lightAccent;
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
