@@ -2,14 +2,13 @@
 
 A comprehensive task management and school planner application designed to help students organize assignments, track deadlines, and boost productivity. Perfect for managing academic life efficiently!
 
-## 🚀 Live Demo
+## 🚀 Web Preview (Under Development)
 
-**Hosted on Vercel:** [https://to-do-list-school-planner.vercel.app/](https://to-do-list-school-planner.vercel.app/)
-> ⚠️ Note: This README describes the Python CLI version.
-> The mention of "Vercel" refers to future web-based plans.
+[https://to-do-list-school-planner.vercel.app/](https://to-do-list-school-planner.vercel.app/)
 
-> ⚠️ Note: This README describes the Python CLI version.
-> The mention of "Vercel" refers to future web-based plans.
+> ⚠️ **Note:** The link above points to a separate web app version currently under development. The rest of this README describes the Python CLI tool.
+>
+> **For Python CLI usage, follow instructions below.**
 
 ## 📋 Table of Contents
 
@@ -56,298 +55,177 @@ A comprehensive task management and school planner application designed to help 
    Note: This project uses Python standard library modules, so no external dependencies are required.
 
 3. **Run the application**
+
    ```bash
    python main.py
    ```
 
 ## 📖 Usage
 
-### Quick Start Guide
+### Main Menu Options
 
-When you run the application, you'll see a menu with the following options:
+When you run the application, you'll see the following menu:
 
 ```
---- To-Do List School Planner ---
+To-Do List School Planner
 1. Add Task
 2. View All Tasks
 3. View Tasks by Status
 4. View Tasks by Priority
-5. Update Task Status
-6. Update Task Priority
-7. Delete Task
-8. Search Tasks
-9. Mark Task as Complete
-0. Exit
+5. Update Task
+6. Delete Task
+7. Search Tasks
+8. Exit
 ```
 
-### Usage Examples
+### Adding a Task
 
-#### Adding a Task
+1. Select option `1` from the main menu
+2. Enter task details:
+   - Title
+   - Description
+   - Due date (YYYY-MM-DD format)
+   - Priority (LOW/MEDIUM/HIGH)
 
-```
-Select option: 1
-Enter task title: Complete Math Assignment
-Enter task description: Solve problems 1-20 from Chapter 5
-Enter due date (YYYY-MM-DD): 2025-10-30
-Select priority (1: LOW, 2: MEDIUM, 3: HIGH): 3
-✓ Task added successfully!
-```
+### Viewing Tasks
 
-#### Viewing Tasks
+- **View All Tasks** (Option 2): Displays all tasks in the system
+- **View by Status** (Option 3): Filter tasks by TODO, IN_PROGRESS, or COMPLETED
+- **View by Priority** (Option 4): Filter tasks by LOW, MEDIUM, or HIGH priority
 
-```
-Select option: 2
+### Updating Tasks
 
-All Tasks:
---------------------------------------------------
-ID: 1
-Title: Complete Math Assignment
-Description: Solve problems 1-20 from Chapter 5
-Status: TODO
-Priority: HIGH
-Due Date: 2025-10-30
---------------------------------------------------
-```
+1. Select option `5` from the main menu
+2. Enter the task ID
+3. Choose what to update:
+   - Title
+   - Description
+   - Due date
+   - Priority
+   - Status
 
-#### Updating Task Status
+### Searching Tasks
 
-```
-Select option: 5
-Enter task ID: 1
-Select new status (1: TODO, 2: IN_PROGRESS, 3: COMPLETED): 2
-✓ Task status updated to IN_PROGRESS!
-```
-
-#### Searching Tasks
-
-```
-Select option: 8
-Enter search term: Math
-
-Search Results:
---------------------------------------------------
-ID: 1
-Title: Complete Math Assignment
-...
-```
+Select option `7` and enter keywords to search in task titles and descriptions.
 
 ## 🏗️ Architecture
 
-### Project Structure
+The application follows an object-oriented design with the following main components:
 
+### Core Classes
+
+#### Task Class (`task.py`)
+
+```python
+class Task:
+    def __init__(self, title, description, due_date, priority):
+        self.id = unique_id
+        self.title = title
+        self.description = description
+        self.due_date = due_date
+        self.priority = priority  # LOW, MEDIUM, HIGH
+        self.status = "TODO"  # TODO, IN_PROGRESS, COMPLETED
+        self.created_at = datetime.now()
 ```
-To-Do-List-School-Planner/
-│
-├── main.py              # Main application file
-├── README.md            # Project documentation
-└── requirements.txt     # Python dependencies (if any)
-```
 
-### Core Components
+#### TaskManager Class (`task_manager.py`)
 
-#### 1. Priority (Enum)
+Manages all task operations:
+- `add_task()`: Create new tasks
+- `get_all_tasks()`: Retrieve all tasks
+- `get_task_by_id()`: Find specific task
+- `update_task()`: Modify task details
+- `delete_task()`: Remove tasks
+- `filter_by_status()`: Filter tasks by status
+- `filter_by_priority()`: Filter tasks by priority
+- `search_tasks()`: Search functionality
 
-Defines task priority levels:
+#### UserInterface Class (`ui.py`)
 
-- `LOW`: For non-urgent tasks
-- `MEDIUM`: For moderately important tasks
-- `HIGH`: For urgent and important tasks
+Handles all user interactions and display formatting.
 
-#### 2. TaskStatus (Enum)
+### Data Storage
 
-Defines task completion states:
-
-- `TODO`: Task not yet started
-- `IN_PROGRESS`: Task is being worked on
-- `COMPLETED`: Task is finished
-
-#### 3. Task (Class)
-
-Represents an individual task with the following attributes:
-
-- `task_id`: Unique identifier
-- `title`: Task name
-- `description`: Detailed task information
-- `status`: Current task status
-- `priority`: Task priority level
-- `due_date`: Task deadline
-- `created_at`: Task creation timestamp
-
-#### 4. TodoList (Class)
-
-Manages the collection of tasks and provides methods for:
-
-- Adding new tasks
-- Viewing tasks (all, by status, by priority)
-- Updating task properties
-- Deleting tasks
-- Searching tasks
-- Task completion management
-
-### Data Flow
-
-1. User interacts with the command-line menu
-2. Input is validated and processed
-3. TodoList methods perform operations on tasks
-4. Results are displayed to the user
-5. Task data persists in memory during the session
+Tasks are stored in a JSON file (`tasks.json`) for persistence between sessions.
 
 ## 📚 API Documentation
 
-### Task Class
+### Task Operations
 
-#### Constructor
+#### Create Task
 
 ```python
-Task(task_id: int, title: str, description: str,
-     status: TaskStatus, priority: Priority, due_date: datetime)
+task_manager.add_task(title, description, due_date, priority)
 ```
 
-#### Methods
+**Parameters:**
+- `title` (str): Task title
+- `description` (str): Detailed description
+- `due_date` (str): Due date in YYYY-MM-DD format
+- `priority` (str): LOW, MEDIUM, or HIGH
 
-- `__str__()`: Returns string representation of the task
+#### Get All Tasks
 
-### TodoList Class
+```python
+tasks = task_manager.get_all_tasks()
+```
 
-#### Methods
+**Returns:** List of all Task objects
 
-##### `add_task(title: str, description: str, priority: Priority, due_date: datetime) -> None`
+#### Update Task
 
-Adds a new task to the list.
+```python
+task_manager.update_task(task_id, **kwargs)
+```
 
 **Parameters:**
+- `task_id` (str): Unique task identifier
+- `**kwargs`: Fields to update (title, description, due_date, priority, status)
 
-- `title`: Task title (string)
-- `description`: Task description (string)
-- `priority`: Task priority (Priority enum)
-- `due_date`: Task due date (datetime object)
+#### Delete Task
 
-**Returns:** None
-
-##### `view_all_tasks() -> None`
-
-Displays all tasks in the list.
-
-**Returns:** None
-
-##### `view_tasks_by_status(status: TaskStatus) -> None`
-
-Displays tasks filtered by status.
+```python
+task_manager.delete_task(task_id)
+```
 
 **Parameters:**
+- `task_id` (str): Unique task identifier
 
-- `status`: Filter by task status (TaskStatus enum)
+#### Filter Tasks
 
-**Returns:** None
+```python
+# By status
+tasks = task_manager.filter_by_status("TODO")
 
-##### `view_tasks_by_priority(priority: Priority) -> None`
+# By priority
+tasks = task_manager.filter_by_priority("HIGH")
+```
 
-Displays tasks filtered by priority.
+#### Search Tasks
 
-**Parameters:**
-
-- `priority`: Filter by task priority (Priority enum)
-
-**Returns:** None
-
-##### `update_task_status(task_id: int, new_status: TaskStatus) -> bool`
-
-Updates the status of a specific task.
-
-**Parameters:**
-
-- `task_id`: ID of the task to update (int)
-- `new_status`: New status value (TaskStatus enum)
-
-**Returns:** True if successful, False otherwise
-
-##### `update_task_priority(task_id: int, new_priority: Priority) -> bool`
-
-Updates the priority of a specific task.
+```python
+results = task_manager.search_tasks("assignment")
+```
 
 **Parameters:**
+- `query` (str): Search term
 
-- `task_id`: ID of the task to update (int)
-- `new_priority`: New priority value (Priority enum)
-
-**Returns:** True if successful, False otherwise
-
-##### `delete_task(task_id: int) -> bool`
-
-Deletes a task from the list.
-
-**Parameters:**
-
-- `task_id`: ID of the task to delete (int)
-
-**Returns:** True if successful, False otherwise
-
-##### `search_tasks(query: str) -> List[Task]`
-
-Searches for tasks by title or description.
-
-**Parameters:**
-
-- `query`: Search term (string)
-
-**Returns:** List of matching tasks
-
-##### `mark_task_complete(task_id: int) -> bool`
-
-Marks a task as completed.
-
-**Parameters:**
-
-- `task_id`: ID of the task to mark complete (int)
-
-**Returns:** True if successful, False otherwise
+**Returns:** List of matching Task objects
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how you can help:
+We welcome contributions! Here's how you can help:
 
 ### How to Contribute
 
 1. **Fork the repository**
 
-   - Click the "Fork" button at the top right of this page
-
-2. **Clone your fork**
-
-   ```bash
-   git clone https://github.com/YOUR-USERNAME/To-Do-List-School-Planner.git
-   cd To-Do-List-School-Planner
-   ```
-
-3. **Create a new branch**
-
+2. **Create a new branch**
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-4. **Make your changes**
-
-   - Write clear, commented code
-   - Follow existing code style
-   - Add tests if applicable
-
-5. **Commit your changes**
-
-   ```bash
-   git add .
-   git commit -m "Add: Brief description of your changes"
-   ```
-
-6. **Push to your fork**
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
-
-7. **Create a Pull Request**
-   - Go to the original repository
-   - Click "New Pull Request"
-   - Select your fork and branch
+3. **Make your changes**
    - Describe your changes in detail
 
 ### Contribution Guidelines
